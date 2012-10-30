@@ -1,7 +1,7 @@
 clear all
 clc
 
-pfad = '..\LOG26102012\session0001\';
+pfad = '..\LOG30102012\SESSIO~4\';
 datei = 'sysvector.bin';
 dateipfad = strcat(pfad,datei);
 
@@ -46,15 +46,18 @@ if exist(dateipfad, 'file')
         % adc voltage (3 channels)
         sensors(i,27:29) = fread(fid, 3, 'float', 0, 'ieee-le');
         
-        % local pos
+        % local pos [m] (x,y,z)
         sensors(i,30:32) = fread(fid, 3, 'float', 0, 'ieee-le');
         
-        % gps pos
+        % gps pos [lat degree,lot degree, alt millimeter over sea]
         sensors(i,33:35) = fread(fid, 3, 'uint32', 0, 'ieee-le');
+        
+        % attitude [rad]
+        sensors(i,36:38) = fread(fid, 3, 'float', 0, 'ieee-le');
+        
+        % RotMatrix
+        sensors(i,39:47) = fread(fid, 9, 'float', 0, 'ieee-le');
     end
-    pos_loc(:,1:3) = sensors(:,30:32);
-    
-    pos_gps(:,1:3) = sensors(:,33:35);
     time_us = sensors(elements,1) - sensors(1,1);
     time_s = time_us*10^(-6)
     time_m = time_s/60

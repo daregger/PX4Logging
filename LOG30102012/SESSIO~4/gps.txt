@@ -1,0 +1,1 @@
+gps, pos_est, sdlog, kurzer flug mit grossen steuereingaben, lift off direkt von da wo pos_estimator gestartet wurde.
