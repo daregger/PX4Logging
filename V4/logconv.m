@@ -3,6 +3,9 @@ close all
 
 %%%%%%%%%%%%%%%%%%%%%%%
 % SYSTEM VECTOR
+%
+% //All measurements in NED frame
+%
 % uint64_t timestamp; //[us]
 % float gyro[3]; //[rad/s]
 % float accel[3]; //[m/s^2]
@@ -19,8 +22,8 @@ close all
 % float attitude[3]; //pitch, roll, yaw [rad]
 % float rotMatrix[9]; //unitvectors
 
-myPath = '..\LOG30102012\session0002\';    %set relative path here
-%myPath = '.\';                             
+%myPath = '..\LOG30102012\session0002\';    %set relative path here
+myPath = '.\';                             
 myFile = 'sysvector.bin';
 filePath = strcat(myPath,myFile);
 
