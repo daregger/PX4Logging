@@ -1,31 +1,35 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Thrust angel pos estimator V3: estimat from real data
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+logconv;
 
 close all
-start = 1;
-
 %% read in data from logconv
-xt = sensors(:,1);
-pos_loc(:,1:3) = sensors(:,30:32);
-pos_gps(:,1:3) = sensors(:,33:35);
-attitude_rad(:,1:3) = sensors(:,36:38);
-thrust(:,1) = sensors(:,22);
-rot_matrix(:,1:9) = sensors(:,39:47);
-rot11(1,:) = rot_matrix(:,1);
-rot12(1,:) = rot_matrix(:,2);
-rot13(1,:) = rot_matrix(:,3);
-rot21(1,:) = rot_matrix(:,4);
-rot22(1,:) = rot_matrix(:,5);
-rot23(1,:) = rot_matrix(:,6);
-rot31(1,:) = rot_matrix(:,7);
-rot32(1,:) = rot_matrix(:,8);
-rot33(1,:) = rot_matrix(:,9);
+logstart = 1700;
+logstop = elements;
+elements = logstop-logstart+1;
+start = 1;
+xt(start:elements,1) = sensors(logstart:logstop,1);
+pos_loc(start:elements,1:3) = sensors(logstart:logstop,30:32);
+pos_gps(start:elements,1:3) = sensors(logstart:logstop,33:35);
+attitude_rad(start:elements,1:3) = sensors(logstart:logstop,36:38);
+thrust(start:elements,1) = sensors(logstart:logstop,22);
+rot_matrix(start:elements,1:9) = sensors(logstart:logstop,39:47);
+rot11(start:elements) = rot_matrix(start:elements,1);
+rot12(start:elements) = rot_matrix(start:elements,2);
+rot13(start:elements) = rot_matrix(start:elements,3);
+rot21(start:elements) = rot_matrix(start:elements,4);
+rot22(start:elements) = rot_matrix(start:elements,5);
+rot23(start:elements) = rot_matrix(start:elements,6);
+rot31(start:elements) = rot_matrix(start:elements,7);
+rot32(start:elements) = rot_matrix(start:elements,8);
+rot33(start:elements) = rot_matrix(start:elements,9);
 for i = 1:elements
     rot(1:3,1:3,i) = [rot11(1,i) rot12(1,i) rot13(1,i);rot21(1,i) rot22(1,i) rot23(1,i);rot31(1,i) rot32(1,i) rot33(1,i)];
 end
+
 %plot3(rot11(1,:),rot12(1,:),rot13(1,:))
-%plot(xt,rot11(1,:))
+%plot(xt,rot11(1,:),xt,rot12(1,:),xt,rot13(1,:),xt,rot21(1,:),xt,rot22(1,:),xt,rot23(1,:),xt,rot31(1,:),xt,rot32(1,:),xt,rot33(1,:));legend('r11','r12','r13','r21','r22','r23','r31','r32','r33');
 
 %% Model
 dt=zeros(elements,1);
@@ -38,7 +42,7 @@ m = 0.448;   %[kg]
 %attitude_deg = attitude_rad*180/pi; plot(1:elements,attitude_deg(:,1));
 force(1:elements,1) = zeros(elements,1);
 for i=1:elements
-    force(i,1) = schubkurveTobi(thrust(i,1));
+    force(i,1) = thrust2force(thrust(i,1));
 end
 %plot(1:elements,thrust);
 %plot(1:elements,force);
@@ -50,14 +54,21 @@ a_y_body(:,1) = F_y(:,1)/m;
 a_z_body(:,1) = force(:,1)/m-9.81;
 %plot(1:elements,a_x_body,1:elements,a_y_body,1:elements,a_z_body); legend('acc x body','acc y body','acc z body'); %[m/s^2]
 
-a_x_e(1:elements,1) = zeros(elements,1);
-a_y_e(1:elements,1) = zeros(elements,1);
-a_z_e(1:elements,1) = zeros(elements,1);    
+a_x_e_mean(1:elements,1) = zeros(elements,1);
+a_y_e_mean(1:elements,1) = zeros(elements,1);
+a_z_e_mean(1:elements,1) = zeros(elements,1);    
 for i = 1:elements
-    a_x_e(i,1) = rot(1,1:3)*[a_x_body(i,1);a_y_body(i,1);a_z_body(i,1)];
-    a_y_e(i,1) = rot(2,1:3)*[a_x_body(i,1);a_y_body(i,1);a_z_body(i,1)];
-    a_z_e(i,1) = rot(3,1:3)*[a_x_body(i,1);a_y_body(i,1);a_z_body(i,1)];
+    a_x_e_mean(i,1) = rot(1,1:3)*[a_x_body(i,1);a_y_body(i,1);a_z_body(i,1)];
+    a_y_e_mean(i,1) = rot(2,1:3)*[a_x_body(i,1);a_y_body(i,1);a_z_body(i,1)];
+    a_z_e_mean(i,1) = rot(3,1:3)*[a_x_body(i,1);a_y_body(i,1);a_z_body(i,1)];
 end
+% subtract mean out of acceleration if needed
+a_x_e(:,1) = a_x_e_mean(:,1)% - mean(a_x_e_mean(:,1));
+a_y_e(:,1) = a_y_e_mean(:,1)% - mean(a_y_e_mean(:,1));
+a_z_e(:,1) = a_z_e_mean(:,1)% - mean(a_z_e_mean(:,1));
+
+%mean(a_x_e_meanless(:,1))
+
 %figure(2);plot(1:elements,a_x_e,1:elements,a_y_e,1:elements,a_z_e); legend('acc x earth','acc y earth','acc z earth'); %[m/s^2]
 
 velocity_observe_x = 0;                       
@@ -102,25 +113,25 @@ newGPS_y_plot(1,:) = newGPS_y(1,:)'.*pos_loc(:,2);
 %% Initial condition
 x_x(:,start) = [0 0]';                                % just a initial guess
 P_x = 10*ones(2);                                  % not equal 0!
-%P_x = [225 240;240 430]
 
 x_y(:,start) = [0 0]';                                % just a initial guess
 P_y = 10*ones(2);                                  % not equal 0!
 
 %% process noise variance Q                                                               !!!!!!!!!!!!!!!!!!!!!  TO TUNE !!!!!!!!!!!!!!!!!!!!!
-q_x = [1 1];   %default: [0.3162 1]
-q_y = [0.3 1];
+q_x = [1 5]';
+q_y = [5 10]';
+%q_x = [1e-10 1e-10]';
+%q_y = [1e-3 1e-0]';
 
 %% measurement noise variance R
-sigma_x = [sqrt(var(pos_loc(:,1))) 1]'     %default [sqrt(var(pos_loc(:,1))) 1]'  6.25    
-sigma_y = [sqrt(var(pos_loc(:,2))) 1]'    %sqrt(var(pos_loc(:,2))),8.39
+sigma_x = 6;     %default [sqrt(var(pos_loc(:,1))) 1]'  6.25    
+sigma_y = 8;  %sqrt(var(pos_loc(:,2))),8.39
 
 %% Kalman Filter iteratiion x
 %Test = zeros(1,start:elements-1);
 for k = start:elements-1
-    [x_x(:,k+1),P_x] = positionKalmanFilter1D(x_x(:,k),P_x,velocity_observe_x,0,(a_x_e(k,1))/1000,z_x(:,k+1),sigma_x,q_x,dt(k,1));      %a_x(k,1)
-    [x_y(:,k+1),P_y] = positionKalmanFilter1D(x_y(:,k),P_y,velocity_observe_y,0,(a_y_e(k,1))/100,z_y(:,k+1),sigma_y,q_y,dt(k,1));
-    %Test(1,k) = P_x(2,1);
+    [x_x(:,k+1),P_x] = positionKalmanFilter1D(x_x(:,k),P_x,velocity_observe_x,newGPS_x(1,k),a_x_e(k,1),[z_x(1,k) 0]',[sigma_x 0]',q_x,dt(k,1));    %newGPS_x(1,k)
+    [x_y(:,k+1),P_y] = positionKalmanFilter1D(x_y(:,k),P_y,velocity_observe_y,newGPS_y(1,k),a_y_e(k,1),[z_y(1,k) 0]',[sigma_y 0]',q_y,dt(k,1));  %-a_y_e(k,1
 end
 
 %figure(5)

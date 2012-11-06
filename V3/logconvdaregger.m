@@ -1,7 +1,8 @@
 clear all
 clc
+close all
 
-pfad = '..\LOG30102012\SESSIO~4\';
+pfad = '..\LOG01112012\SESSIO~1\';
 datei = 'sysvector.bin';
 dateipfad = strcat(pfad,datei);
 
@@ -55,7 +56,7 @@ if exist(dateipfad, 'file')
         % attitude [rad]
         sensors(i,36:38) = fread(fid, 3, 'float', 0, 'ieee-le');
         
-        % RotMatrix
+        % RotMatrix einheitsvektoren
         sensors(i,39:47) = fread(fid, 9, 'float', 0, 'ieee-le');
     end
     time_us = sensors(elements,1) - sensors(1,1);
