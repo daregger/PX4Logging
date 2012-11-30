@@ -38,9 +38,9 @@ for flight = 1:FlugCnt
     end
 end
 %%
-dt=1/150;
+dT=1/120;
 GPS_update_freq = 1;
-GPS_dt_factor = GPS_update_freq / dt
+GPS_dt_factor = GPS_update_freq / dT
 
 A=[0,1,0;
     0,0,-1;
@@ -50,7 +50,7 @@ A=[0,1,0;
     C=[1,0,0];
 
 sys_C=ss(A,B,C,[]);
-sys_D=c2d(sys_C,dt);
+sys_D=c2d(sys_C,dT);
 
 Ad=sys_D.A
 Bd=sys_D.B
@@ -148,7 +148,7 @@ for accThresh = accThreshStart:accThreshStep:accThreshStop
                 x_apriori=x_aposteriori;
                 P_x_apriori=P_x_aposteriori;
                 % y Direction
-                [y_aposteriori,P_y_aposteriori]=positionKalmanFilter1D(Ad,Bd,Cd,y_apriori,P_y_apriori,u_y_e,z_y,1,Q,R,accThresh,decay);
+                [y_aposteriori,P_y_aposteriori]=positionKalmanFilter1D_dT(dT,y_apriori,P_y_apriori,u_y_e,z_y,1,Q,R,accThresh,decay);
                 y_apriori=y_aposteriori;
                 P_y_apriori=P_y_aposteriori;
                 plot_val(1:3,i,flight,decayIndex,accThreshIndex) = x_aposteriori;
@@ -160,7 +160,7 @@ for accThresh = accThreshStart:accThreshStep:accThreshStop
                 error_sum(flight,decayIndex,accThreshIndex) = error_sum(flight,decayIndex,accThreshIndex) + sqrt((x_aposteriori(1) - x_vicon(i))^2 + (y_aposteriori(1) - y_vicon(i))^2);
             end
             % divide error through flight time
-            error_sum(flight,decayIndex,accThreshIndex) = error_sum(flight,decayIndex,accThreshIndex)/((end_sim-start_sim)*dt);
+            error_sum(flight,decayIndex,accThreshIndex) = error_sum(flight,decayIndex,accThreshIndex)/((end_sim-start_sim)*dT);
         end
         decayIndex = decayIndex + 1
     end
