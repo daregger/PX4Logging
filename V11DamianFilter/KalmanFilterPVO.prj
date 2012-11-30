@@ -42,7 +42,7 @@
       <param.mex.MemcpyThreshold>64</param.mex.MemcpyThreshold>
       <param.mex.general.EnableBLAS>true</param.mex.general.EnableBLAS>
       <param.mex.InitFltsAndDblsToZero>true</param.mex.InitFltsAndDblsToZero>
-      <param.grt.GenCodeOnly>false</param.grt.GenCodeOnly>
+      <param.grt.GenCodeOnly>true</param.grt.GenCodeOnly>
       <param.grt.paths.working>option.paths.working.project</param.grt.paths.working>
       <param.grt.paths.working.specified/>
       <param.grt.paths.build>option.paths.build.project</param.grt.paths.build>
@@ -109,23 +109,23 @@
       <param.version>R2012a</param.version>
       <param.HasECoderFeatures>true</param.HasECoderFeatures>
       <param.mex.mainhtml>H:\0000_SAMA_PIXHAWK\06_Logging\V11DamianFilter\codegen\mex\KalmanPosition\html\index.html</param.mex.mainhtml>
-      <param.grt.mainhtml>H:\0000_SAMA_PIXHAWK\06_Logging\V11DamianFilter\codegen\lib\KalmanPosition\html\index.html</param.grt.mainhtml>
+      <param.grt.mainhtml>H:\0000_SAMA_PIXHAWK\06_Logging\V11DamianFilter\codegen\lib\positionKalmanFilter1D\html\index.html</param.grt.mainhtml>
       <param.RebuildBeforeTesting>false</param.RebuildBeforeTesting>
       <param.CallGeneratedCodeFromTest>false</param.CallGeneratedCodeFromTest>
-      <param.DefaultTestFile/>
+      <param.DefaultTestFile>${PROJECT_ROOT}\divideLogWithAccThreshold2DPosUpdate.m</param.DefaultTestFile>
       <param.AutoInferUseVariableSize>false</param.AutoInferUseVariableSize>
       <param.AutoInferUseUnboundedSize>false</param.AutoInferUseUnboundedSize>
       <param.AutoInferVariableSizeThreshold>1024</param.AutoInferVariableSizeThreshold>
       <param.AutoInferUnboundedSizeThreshold>2048</param.AutoInferUnboundedSizeThreshold>
-      <param.mex.outputfile>KalmanPosition_mex</param.mex.outputfile>
-      <param.grt.outputfile>KalmanPosition</param.grt.outputfile>
+      <param.mex.outputfile>positionKalmanFilter1D_mex</param.mex.outputfile>
+      <param.grt.outputfile>positionKalmanFilter1D</param.grt.outputfile>
       <param.artifact>option.target.artifact.lib</param.artifact>
       <param.UsePreconditions>false</param.UsePreconditions>
       <fileset.entrypoints>
       
-         <file value="${PROJECT_ROOT}\KalmanPosition.m" custom-data-expanded="true">
+         <file value="${PROJECT_ROOT}\positionKalmanFilter1D.m" custom-data-expanded="true">
         
-            <Inputs fileName="KalmanPosition.m" functionName="KalmanPosition">
+            <Inputs fileName="positionKalmanFilter1D.m" functionName="positionKalmanFilter1D">
           
                <Input Name="A">
             
@@ -354,8 +354,8 @@
             <TargetEndianess>1</TargetEndianess>
             <TargetLargestAtomicInteger>0</TargetLargestAtomicInteger>
             <TargetLargestAtomicFloat>0</TargetLargestAtomicFloat>
-            <TargetIntDivRoundTo>0</TargetIntDivRoundTo>
-            <TargetShiftRightIntArith>false</TargetShiftRightIntArith>
+            <TargetIntDivRoundTo>1</TargetIntDivRoundTo>
+            <TargetShiftRightIntArith>true</TargetShiftRightIntArith>
             <ProdVendorName>Generic</ProdVendorName>
             <ProdTypeName>MATLAB Host Computer</ProdTypeName>
             <ProdBitPerChar>8</ProdBitPerChar>
@@ -369,8 +369,8 @@
             <ProdEndianess>1</ProdEndianess>
             <ProdLargestAtomicInteger>0</ProdLargestAtomicInteger>
             <ProdLargestAtomicFloat>0</ProdLargestAtomicFloat>
-            <ProdIntDivRoundTo>0</ProdIntDivRoundTo>
-            <ProdShiftRightIntArith>false</ProdShiftRightIntArith>
+            <ProdIntDivRoundTo>1</ProdIntDivRoundTo>
+            <ProdShiftRightIntArith>true</ProdShiftRightIntArith>
          </HardwareImplementation>
       </param.hardware.implementation>
       <unset>
@@ -414,7 +414,6 @@
          <param.mex.MemcpyThreshold/>
          <param.mex.general.EnableBLAS/>
          <param.mex.InitFltsAndDblsToZero/>
-         <param.grt.GenCodeOnly/>
          <param.grt.paths.working/>
          <param.grt.paths.working.specified/>
          <param.grt.paths.build/>
@@ -456,8 +455,6 @@
          <param.grt.customcode.CustomSource/>
          <param.grt.customcode.CustomLibrary/>
          <param.grt.PostCodeGenCommand/>
-         <param.grt.TargetFunctionLibrary/>
-         <param.ert.TargetFunctionLibrary/>
          <param.SameHardware/>
          <var.instance.enabled.Production/>
          <var.instance.enabled.Target/>
@@ -480,7 +477,6 @@
          <param.UseECoderFeatures/>
          <param.version/>
          <param.HasECoderFeatures/>
-         <param.DefaultTestFile/>
          <param.AutoInferUseVariableSize/>
          <param.AutoInferUseUnboundedSize/>
          <param.AutoInferVariableSizeThreshold/>

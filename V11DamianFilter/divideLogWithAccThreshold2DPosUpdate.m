@@ -52,9 +52,9 @@ A=[0,1,0;
 sys_C=ss(A,B,C,[]);
 sys_D=c2d(sys_C,dt);
 
-Ad=sys_D.A;
-Bd=sys_D.B;
-Cd=sys_D.C;   
+Ad=sys_D.A
+Bd=sys_D.B
+Cd=sys_D.C   
 
 Observability = rank([Cd;Cd*Ad;Cd*Ad^2]);  %observable
 Controllable = rank([Bd Ad*Bd Ad^2*Bd]);   %but not controllable
@@ -144,11 +144,11 @@ for accThresh = accThreshStart:accThreshStep:accThreshStop
                 end
 
                 % x Direction
-                [x_aposteriori,P_x_aposteriori]=KalmanPosition(Ad,Bd,Cd,x_apriori,P_x_apriori,u_x_e,z_x,gps_update,Q,R,accThresh,decay);
+                [x_aposteriori,P_x_aposteriori]=positionKalmanFilter1D(Ad,Bd,Cd,x_apriori,P_x_apriori,u_x_e,z_x,gps_update,Q,R,accThresh,decay);
                 x_apriori=x_aposteriori;
                 P_x_apriori=P_x_aposteriori;
                 % y Direction
-                [y_aposteriori,P_y_aposteriori]=KalmanPosition(Ad,Bd,Cd,y_apriori,P_y_apriori,u_y_e,z_y,1,Q,R,accThresh,decay);
+                [y_aposteriori,P_y_aposteriori]=positionKalmanFilter1D(Ad,Bd,Cd,y_apriori,P_y_apriori,u_y_e,z_y,1,Q,R,accThresh,decay);
                 y_apriori=y_aposteriori;
                 P_y_apriori=P_y_aposteriori;
                 plot_val(1:3,i,flight,decayIndex,accThreshIndex) = x_aposteriori;
