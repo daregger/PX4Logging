@@ -169,7 +169,7 @@
           
                </Input>
           
-               <Input Name="x_aposteriori">
+               <Input Name="x_aposteriori_k">
             
                   <Class>single</Class>
             
@@ -183,7 +183,7 @@
           
                </Input>
           
-               <Input Name="P_aposteriori">
+               <Input Name="P_aposteriori_k">
             
                   <Class>single</Class>
             

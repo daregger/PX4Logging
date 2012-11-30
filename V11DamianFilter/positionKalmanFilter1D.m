@@ -1,7 +1,7 @@
-function  [x_aposteriori,P_aposteriori]=positionKalmanFilter1D(A,B,C,x_aposteriori,P_aposteriori,u,z,gps_update,Q,R,thresh,decay)
+function  [x_aposteriori,P_aposteriori]=positionKalmanFilter1D(A,B,C,x_aposteriori_k,P_aposteriori_k,u,z,gps_update,Q,R,thresh,decay)
     %prediction
-    x_apriori=A*x_aposteriori+B*u;
-    P_apriori=A*P_aposteriori*A'+Q;
+    x_apriori=A*x_aposteriori_k+B*u;
+    P_apriori=A*P_aposteriori_k*A'+Q;
     if abs(u)<thresh
         x_apriori(2)=decay*x_apriori(2);
     end
