@@ -109,9 +109,9 @@
       <param.version>R2012a</param.version>
       <param.HasECoderFeatures>true</param.HasECoderFeatures>
       <param.mex.mainhtml>H:\0000_SAMA_PIXHAWK\06_Logging\V11DamianFilter\codegen\mex\KalmanPosition\html\index.html</param.mex.mainhtml>
-      <param.grt.mainhtml/>
-      <param.RebuildBeforeTesting>true</param.RebuildBeforeTesting>
-      <param.CallGeneratedCodeFromTest>true</param.CallGeneratedCodeFromTest>
+      <param.grt.mainhtml>H:\0000_SAMA_PIXHAWK\06_Logging\V11DamianFilter\codegen\lib\KalmanPosition\html\index.html</param.grt.mainhtml>
+      <param.RebuildBeforeTesting>false</param.RebuildBeforeTesting>
+      <param.CallGeneratedCodeFromTest>false</param.CallGeneratedCodeFromTest>
       <param.DefaultTestFile/>
       <param.AutoInferUseVariableSize>false</param.AutoInferUseVariableSize>
       <param.AutoInferUseUnboundedSize>false</param.AutoInferUseUnboundedSize>
@@ -119,7 +119,7 @@
       <param.AutoInferUnboundedSizeThreshold>2048</param.AutoInferUnboundedSizeThreshold>
       <param.mex.outputfile>KalmanPosition_mex</param.mex.outputfile>
       <param.grt.outputfile>KalmanPosition</param.grt.outputfile>
-      <param.artifact>option.target.artifact.mex</param.artifact>
+      <param.artifact>option.target.artifact.lib</param.artifact>
       <param.UsePreconditions>false</param.UsePreconditions>
       <fileset.entrypoints>
       
@@ -480,9 +480,6 @@
          <param.UseECoderFeatures/>
          <param.version/>
          <param.HasECoderFeatures/>
-         <param.grt.mainhtml/>
-         <param.RebuildBeforeTesting/>
-         <param.CallGeneratedCodeFromTest/>
          <param.DefaultTestFile/>
          <param.AutoInferUseVariableSize/>
          <param.AutoInferUseUnboundedSize/>
@@ -490,7 +487,6 @@
          <param.AutoInferUnboundedSizeThreshold/>
          <param.mex.outputfile/>
          <param.grt.outputfile/>
-         <param.artifact/>
          <param.UsePreconditions/>
       </unset>
    </configuration>
